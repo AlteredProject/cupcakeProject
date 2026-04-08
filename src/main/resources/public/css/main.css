@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* -- Header -- */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #9B8EC7;
+}
+
+.header img {
+    max-width: 100%;
+    height: auto;
+}
+
+.logo {
+    width: 75px;
+    padding-top: 10px;
+}
+
+.cupcakes {
+    width: 290px;
+}
+
+/* -- NavBar -- */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #bda6ce;
+    margin-top: 5px;
+    padding: 5px 10px;
+}
+
+.navbar a {
+    font-size: 16px;
+    text-decoration: none;
+    position: relative;
+    transition: 0.2s;
+}
+
+.navbar a:hover {
+    /*Change later*/
+    color: grey;
+}
+
+.navbar span {
+    font-size: 14px;
+}
+
+.navbar img {
+    width: 25px;
+    padding: 5px;
+}
+
+
+/* -- main body -- */
+
+.main-body {
+    background-color: #bda6ce;
+    margin-top: 30px;
+    padding: 30px 25px 40px;
+    height: 60vh;
+}
+
+.order-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 40px;
+}
+
+
+
+@media (min-width: 430px) {
+
+}

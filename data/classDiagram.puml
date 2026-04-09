@@ -1,0 +1,50 @@
+@startuml
+!pragma layout smetana
+
+class Main{
+        - {static} ConnectionPool connectionpool
+    }
+
+    package config {
+        class SessionConfig {
+        }
+        class ThymeleafConfig {
+        }
+    }
+    package controllers {
+        class MainController {
+        }
+    }
+    package entities {
+        class Bottoms {
+            - int id
+            - String name
+            - int price
+        }
+        class Toppings {
+            - int id
+            - String name
+            - int price
+        }
+    }
+    package persistence {
+        class ConnectionPool {
+        }
+        class CupcakeMapper {
+        }
+    }
+
+
+'--- Relations ---'
+Main --> ConnectionPool
+Main --. MainController
+Main --. SessionConfig
+Main --. ThymeleafConfig
+
+MainController --. CupcakeMapper
+
+CupcakeMapper --> Bottoms
+CupcakeMapper --> Toppings
+
+
+@enduml

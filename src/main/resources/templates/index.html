@@ -4,14 +4,17 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <script th:src="@{/js/functions.js}" defer></script>
+
 </head>
 <body>
     <header class="header">
         <div>
-            <img class="logo" src="/public/images/companyLogo2.png">
+            <img class="logo" th:src="@{/images/companyLogo2.png}">
         </div>
         <div>
-            <img class="cupcakes" src="/public/images/cupcakelogo.png">
+            <img class="cupcakes" th:src="@{/images/cupcakelogo.png}">
         </div>
         <div></div>
     </header>
@@ -22,7 +25,7 @@
         <a>Kunder</a>
         <span>bertramfriis1@gmail.com</span>
         <span>Credit: 10000</span>
-        <img src="/public/images/icons8-basket-100.png">
+        <img th:src="@{/images/basket.png}">
     </div>
 
     <div class="main-body">
@@ -30,43 +33,38 @@
         <p class="welcome-sub">Øens bedste cupcakes</p>
 
         <div class="order-form">
-                <select>
-                    <option value="" disabled selected>Vælg Topping</option>
-                    <option>Chocolate</option>
-                    <option>Blueberry</option>
-                    <option>Raspberry</option>
-                    <option>Crispy</option>
-                    <option>Strawberry</option>
-                    <option>Rum/Raisin</option>
-                    <option>Orange</option>
-                    <option>Lemon</option>
-                    <option>Blue Cheese</option>
+            <p>Topping:</p>
+            <select id="topping">
+                <option value="" disabled selected>Vælg</option>
+                <option th:each="entry : ${Toppings}"
+                        th:value="${entry.price}"
+                        th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+            </select>
 
-                </select>
+            <p>Bund:</p>
+            <select id="bottom">
+                <option value="0" disabled selected>Vælg</option>
+                <option th:each="entry : ${Bottoms}"
+                        th:value="${entry.price}"
+                        th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+            </select>
 
-                <select>
-                    <option value="" disabled selected>Vælg Bund</option>
-                    <option>Chocolate</option>
-                    <option>Vanilla</option>
-                    <option>Nutmeg</option>
-                    <option>Pistachio</option>
-                    <option>Almond</option>
+            <p>Mængde</p>
+            <select id="amount">
+                <option value="0" disabled selected>Vælg</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
 
-                </select>
-
-                <select>
-                    <option value="" disabled selected>Vælg Antal</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                </select>
+            <p id="totalPrice">Samlet pris: 0 $</p>
 
             <button class="btn">Læg i Kurv</button>
         </div>

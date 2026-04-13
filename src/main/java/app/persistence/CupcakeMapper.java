@@ -90,7 +90,7 @@ public class CupcakeMapper {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int bottomId = rs.getInt("topping_id");
+                int bottomId = rs.getInt("bottom_id");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
                 bottom = new Bottoms(bottomId, name, price);

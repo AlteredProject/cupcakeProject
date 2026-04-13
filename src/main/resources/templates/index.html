@@ -44,7 +44,12 @@
             <img th:src="@{/images/basket.png}">
 
             <div class="cart-dropdown">
-                <p>Kurven er tom</p>
+                <p th:if="${#lists.isEmpty(basket)}">Kurven er tom</p>
+
+                <div th:each="item : ${basket}">
+                    <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
+                    <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -53,42 +58,42 @@
         <h1 class="welcome-heading">Velkommen ombord</h1>
         <p class="welcome-sub">Øens bedste cupcakes</p>
 
-        <div class="order-form">
-            <p>Topping:</p>
-            <select id="topping">
-                <option value="" disabled selected>Vælg</option>
-                <option th:each="entry : ${Toppings}"
-                        th:value="${entry.price}"
-                        th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
-            </select>
+            <form action="/basket/add" method="post" class="order-form">
+                <p>Topping:</p>
+                <select name="topping">
+                    <option value="" disabled selected>Vælg</option>
+                    <option th:each="entry : ${Toppings}"
+                            th:value="${entry.id}"
+                            th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+                </select>
 
-            <p>Bund:</p>
-            <select id="bottom">
-                <option value="0" disabled selected>Vælg</option>
-                <option th:each="entry : ${Bottoms}"
-                        th:value="${entry.price}"
-                        th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
-            </select>
+                <p>Bund:</p>
+                <select name="bottom">
+                    <option value="0" disabled selected>Vælg</option>
+                    <option th:each="entry : ${Bottoms}"
+                            th:value="${entry.id}"
+                            th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+                </select>
 
-            <p>Mængde</p>
-            <select id="amount">
-                <option value="0" disabled selected>Vælg</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
+                <p>Mængde</p>
+                <select name="quantity">
+                    <option value="0" disabled selected>Vælg</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
 
-            <p id="totalPrice">Samlet pris: 0 $</p>
+                <p id="totalPrice">Samlet pris: 0 $</p>
 
-            <button class="btn">Læg i Kurv</button>
-        </div>
+                <button type="submit" class="btn">Læg i Kurv</button>
+            </form>
     </div>
 
 </body>

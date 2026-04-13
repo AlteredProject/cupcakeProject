@@ -11,6 +11,10 @@ public class Muffins {
         this.quantity = quantity;
     }
 
+    public int totalPrice(){
+        return (bottom.getPrice() + topping.getPrice()) * quantity;
+    }
+
     public Toppings getTopping() {
         return topping;
     }

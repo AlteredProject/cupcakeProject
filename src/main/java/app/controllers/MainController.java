@@ -16,13 +16,19 @@ public class MainController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/", ctx -> homePage(ctx, connectionPool));
         app.get("/order", ctx -> order(ctx, connectionPool));
+        app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
     }
 
     public static void homePage(@NotNull Context ctx, ConnectionPool connectionPool){
         List<Toppings> toppings = CupcakeMapper.getAllToppings(connectionPool);
         List<Bottoms> bottoms = CupcakeMapper.getAllBottoms(connectionPool);
+
+        List<Muffins> basket = ctx.sessionAttribute("basket");
+        if (basket == null) { basket = new ArrayList<>(); }
+
         ctx.attribute("Toppings", toppings);
         ctx.attribute("Bottoms", bottoms);
+        ctx.attribute("basket", basket);
         ctx.render("index.html");
     }
 
@@ -31,19 +37,24 @@ public class MainController {
     }
 
     private static void addToBasket (@NotNull Context ctx, ConnectionPool connectionPool) {
-        List<Muffins> basket = ctx.sessionAttribute("basket");
-        if (basket == null) { basket = new ArrayList<>(); }
+        try {
+            List<Muffins> basket = ctx.sessionAttribute("basket");
+            if (basket == null) { basket = new ArrayList<>(); }
 
-        int bottomId = Integer.parseInt(ctx.formParam("bottom"));
-        int toppingId = Integer.parseInt(ctx.formParam("topping"));
-        int quantity = Integer.parseInt(ctx.formParam("quantity"));
+            int bottomId = Integer.parseInt(ctx.formParam("bottom"));
+            int toppingId = Integer.parseInt(ctx.formParam("topping"));
+            int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
-        Bottoms bottom = CupcakeMapper.getBottomById(bottomId, connectionPool);
-        Toppings toppping = CupcakeMapper.getToppingById(toppingId, connectionPool);
+            Bottoms bottom = CupcakeMapper.getBottomById(bottomId, connectionPool);
+            Toppings toppping = CupcakeMapper.getToppingById(toppingId, connectionPool);
 
-        basket.add(new Muffins(bottom, toppping, quantity));
-        ctx.sessionAttribute("basket", basket);
+            basket.add(new Muffins(bottom, toppping, quantity));
+            ctx.sessionAttribute("basket", basket);
 
-        ctx.redirect("/");
+            ctx.redirect("/");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.result("Fejl: " + e.getMessage());
+        }
     }
 }

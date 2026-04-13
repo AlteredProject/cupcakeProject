@@ -18,7 +18,7 @@ public class MainController {
         app.get("/order", ctx -> order(ctx, connectionPool));
     }
 
-    private static void homePage(@NotNull Context ctx, ConnectionPool connectionPool){
+    public static void homePage(@NotNull Context ctx, ConnectionPool connectionPool){
         List<Toppings> toppings = CupcakeMapper.getAllToppings(connectionPool);
         List<Bottoms> bottoms = CupcakeMapper.getAllBottoms(connectionPool);
         ctx.attribute("Toppings", toppings);

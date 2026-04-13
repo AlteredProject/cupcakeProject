@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <script th:src="@{/js/functions.js}" defer></script>
+
+</head>
+<body>
+<header class="header">
+  <div>
+    <img class="logo" th:src="@{/images/companyLogo2.png}">
+  </div>
+  <div>
+    <img class="cupcakes" th:src="@{/images/cupcakelogo.png}">
+  </div>
+  <div></div>
+</header>
+
+
+<div class="navbar">
+  <a>Ordrer</a>
+  <a>Kunder</a>
+  <span>bertramfriis1@gmail.com</span>
+  <span>Credit: 10000</span>
+  <img th:src="@{/images/basket.png}">
+</div>
+
+<div class="main-body">
+  <h1 class="welcome-heading">Velkommen ombord</h1>
+  <p class="welcome-sub">Øens bedste cupcakes</p>
+
+  <div class="order-form">
+    
+  </div>
+</div>
+
+</body>
+</html>

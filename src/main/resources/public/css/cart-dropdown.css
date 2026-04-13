@@ -1,0 +1,20 @@
+.cart-wrapper {
+    position: relative;
+}
+
+.cart-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    min-width: 200px;
+    z-index: 100;
+}
+
+.cart-wrapper:hover .cart-dropdown {
+    display: block;
+}

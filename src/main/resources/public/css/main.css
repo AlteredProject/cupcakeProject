@@ -1,14 +1,29 @@
+@import url("cart-dropdown.css");
+
+:root {
+    --headerBg: #9B8EC7;
+    --mainBg: #bda6ce;
+    --inputBg: #e8e0f4;
+    --inputBoarder: #c0b0dc;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
+
+a, a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
 
 /* -- Header -- */
 .header {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: #9B8EC7;
+    background-color: var(--headerBg);
 }
 
 .header img {
@@ -59,7 +74,7 @@
 /* -- main body -- */
 
 .main-body {
-    background-color: #bda6ce;
+    background-color: var(--mainBg);
     padding: 30px 25px 40px;
     height: 70vh;
     font-family: 'DM sans', sans-serif;
@@ -74,16 +89,16 @@
 }
 
 select {
-    background: #e8e0f4;
-    border: 1px solid #c0b0dc;
+    background: var(--inputBg);
+    border: 1px solid var(--inputBoarder);
     border-radius: 14px;
     padding: 12px 14px;
     font-size: 15px;
 }
 
 .btn {
-    background: #e8e0f4;
-    border: 1px solid #c0b0dc;
+    background: var(--inputBg);
+    border: 1px solid var(--inputBoarder);
     border-radius: 14px;
     padding: 12px 14px;
     font-size: 15px;

@@ -60,23 +60,25 @@
 
             <form action="/basket/add" method="post" class="order-form">
                 <p>Topping:</p>
-                <select name="topping">
+                <select name="topping" id="topping">
                     <option value="" disabled selected>Vælg</option>
                     <option th:each="entry : ${Toppings}"
                             th:value="${entry.id}"
+                            th:attr="data-price=${entry.price}"
                             th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
                 </select>
 
                 <p>Bund:</p>
-                <select name="bottom">
+                <select name="bottom" id="bottom">
                     <option value="0" disabled selected>Vælg</option>
                     <option th:each="entry : ${Bottoms}"
                             th:value="${entry.id}"
+                            th:attr="data-price=${entry.price}"
                             th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
                 </select>
 
                 <p>Mængde</p>
-                <select name="quantity">
+                <select name="quantity" id="amount">
                     <option value="0" disabled selected>Vælg</option>
                     <option value="1">1</option>
                     <option value="2">2</option>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Title</title>
+  <title>Olsker Cupcakes</title>
   <link rel="stylesheet" href="/public/css/main.css">
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <script th:src="@{/js/functions.js}" defer></script>
@@ -11,7 +11,9 @@
 <body>
 <header class="header">
   <div>
-    <img class="logo" th:src="@{/images/companyLogo2.png}">
+    <a href="/">
+      <img class="logo" th:src="@{/images/companyLogo2.png}">
+    </a>
   </div>
   <div>
     <img class="cupcakes" th:src="@{/images/cupcakelogo.png}">
@@ -21,20 +23,40 @@
 
 
 <div class="navbar">
-  <a>Ordrer</a>
-  <a>Kunder</a>
-  <span>bertramfriis1@gmail.com</span>
-  <span>Credit: 10000</span>
-  <img th:src="@{/images/basket.png}">
+  <a th:if="${session.currentUser}" th:href="@{/order}">Ordrer</a>
+  <p th:if="${session.currentUser}">
+    <a th:if="${session.currentUser.isAdmin}">Kunder</a>
+  </p>
+  <p th:if="${session.currentUser}">
+    <span th:text="${session.currentUser.email}"></span>
+  </p>
+  <p th:unless="${session.currentUser}">
+    <a href="/createUser">Opret bruger</a>
+  </p>
+  <p th:unless="${session.currentUser}">
+    <a href="/login">Login</a>
+  </p>
+  <p th:if="${session.currentUser}">
+    Credit: <span th:text="${session.currentUser.balance}">0</span>
+  </p>
+
+  <div class="cart-wrapper">
+    <a th:href="@{/basket}"><img th:src="@{/images/basket.png}"></a>
+
+    <div class="cart-dropdown">
+      <p th:if="${#lists.isEmpty(basket)}">Kurven er tom</p>
+
+      <div th:each="item : ${basket}">
+        <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
+        <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="main-body">
-  <h1 class="welcome-heading">Velkommen ombord</h1>
-  <p class="welcome-sub">Øens bedste cupcakes</p>
 
-  <div class="order-form">
-    
-  </div>
+
 </div>
 
 </body>

@@ -17,6 +17,7 @@ public class MainController {
         app.get("/", ctx -> homePage(ctx, connectionPool));
         app.get("/order", ctx -> order(ctx, connectionPool));
         app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
+        app.get("/basket", ctx -> basket(ctx, connectionPool));
     }
 
     public static void homePage(@NotNull Context ctx, ConnectionPool connectionPool){
@@ -33,28 +34,36 @@ public class MainController {
     }
 
     private static void order (@NotNull Context ctx, ConnectionPool connectionPool){
-        ctx.render("order.html");
+        renderWithBasket(ctx, "order.html");
+    }
+
+    private static void basket (@NotNull Context ctx, ConnectionPool connectionPool){
+        renderWithBasket(ctx, "basket.html");
     }
 
     private static void addToBasket (@NotNull Context ctx, ConnectionPool connectionPool) {
-        try {
-            List<Muffins> basket = ctx.sessionAttribute("basket");
-            if (basket == null) { basket = new ArrayList<>(); }
 
-            int bottomId = Integer.parseInt(ctx.formParam("bottom"));
-            int toppingId = Integer.parseInt(ctx.formParam("topping"));
-            int quantity = Integer.parseInt(ctx.formParam("quantity"));
+        List<Muffins> basket = ctx.sessionAttribute("basket");
+        if (basket == null) { basket = new ArrayList<>(); }
 
-            Bottoms bottom = CupcakeMapper.getBottomById(bottomId, connectionPool);
-            Toppings toppping = CupcakeMapper.getToppingById(toppingId, connectionPool);
+        int bottomId = Integer.parseInt(ctx.formParam("bottom"));
+        int toppingId = Integer.parseInt(ctx.formParam("topping"));
+        int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
-            basket.add(new Muffins(bottom, toppping, quantity));
-            ctx.sessionAttribute("basket", basket);
+        Bottoms bottom = CupcakeMapper.getBottomById(bottomId, connectionPool);
+        Toppings toppping = CupcakeMapper.getToppingById(toppingId, connectionPool);
 
-            ctx.redirect("/");
-        } catch (Exception e) {
-            e.printStackTrace();
-            ctx.result("Fejl: " + e.getMessage());
-        }
+        basket.add(new Muffins(bottom, toppping, quantity));
+        ctx.sessionAttribute("basket", basket);
+
+        ctx.redirect("/");
+
+    }
+
+    private static void renderWithBasket(Context ctx, String template) {
+        List<Muffins> basket = ctx.sessionAttribute("basket");
+        if (basket == null) { basket = new ArrayList<>(); }
+        ctx.attribute("basket", basket);
+        ctx.render(template);
     }
 }

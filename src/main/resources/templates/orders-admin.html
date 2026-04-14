@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olsker Cupcakes - Customers (admin)</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <script th:src="@{/js/functions.js}" defer></script>
+</head>
+<body>
+<header class="header">
+    <div>
+        <a href="/">
+            <img class="logo" th:src="@{/images/companyLogo2.png}">
+        </a>
+    </div>
+    <div>
+        <img class="cupcakes" th:src="@{/images/cupcakelogo.png}">
+    </div>
+    <div></div>
+</header>
+
+
+<div class="navbar">
+    <a th:if="${session.currentUser}">Ordrer</a>
+    <p th:if="${session.currentUser}">
+        <a th:if="${session.currentUser.isAdmin}" href="/customersView">Kunder</a>
+    </p>
+    <p th:if="${session.currentUser}">
+        <span th:text="${session.currentUser.email}"></span>
+    </p>
+    <p th:if="${session.currentUser}">
+        Credit: <span th:text="${session.currentUser.balance}">0</span>
+    </p>
+    <img th:src="@{/images/basket.png}">
+</div>
+
+<div class="main-body">
+    <div th:if="${session.currentUser.isAdmin}" >
+        <button><a href="/adminCustomersView">Se Alle Brugere</a></button>
+        <button disabled>Se Alle Ordrer</button>
+
+<!--        <table class="customer-table">-->
+<!--            <tr>-->
+<!--                <th>Email</th>-->
+<!--                <th>Balance</th>-->
+<!--                <th></th>-->
+<!--            </tr>-->
+<!--        </table>-->
+    </div>
+    <div th:unless="${session.currentUser.isAdmin}">
+        <p>Dette er kun for admin brugere</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -25,7 +25,7 @@
     <div class="navbar">
         <a th:if="${session.currentUser}">Ordrer</a>
         <p th:if="${session.currentUser}">
-            <a th:if="${session.currentUser.isAdmin}">Kunder</a>
+            <a th:if="${session.currentUser.isAdmin}" href="/adminCustomersView">Kunder</a>
         </p>
         <p th:if="${session.currentUser}">
             <span th:text="${session.currentUser.email}"></span>

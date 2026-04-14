@@ -8,6 +8,7 @@ import app.persistence.UserMapper;
 import app.services.Validator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -26,7 +27,8 @@ public class UserController {
         try {
             String validationError = Validator.validateUser(email, password);
             if (validationError == null) {
-                UserMapper.createUser(email, password, connectionPool);
+                String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+                UserMapper.createUser(email, hashPassword, connectionPool);
                 MainController.homePage(ctx, connectionPool);
             } else {
                 ctx.attribute("msg", validationError);

@@ -15,3 +15,10 @@ function calculatePrice(){
         document.getElementById("totalPrice").innerText = "Samlet pris: " + total + " $";
     }
 }
+
+function basketBought(){
+    const container = document.querySelector('.section-block-grid');
+    container.innerHTML = '<h2>Tak for købet!' +
+        '<h3>Du får en Email når du kan hente din ordrer</h3>';
+
+}

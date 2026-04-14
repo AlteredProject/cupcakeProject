@@ -58,15 +58,16 @@
     <h1 class="welcome-heading">Kurv</h1>
     <p class="welcome-sub"></p>
 
-    <div>
+    <div class="section-block-grid">
         <div th:each="basket : ${basket}">
-            <hr> <!-- laver en linje så det ligner det adskiller hvert input -->
             <span th:text="${basket.bottom.name} + ' med ' + ${basket.topping.name}"></span>
             <span th:text="${basket.quantity} + ' stk ' + ${basket.totalPrice} + '$'"></span>
-            <hr>
+            <hr> <!-- laver en linje så det ligner det adskiller hvert input -->
         </div>
-    </div>
 
+    <button type="button" class="btn" onclick="basketBought()">Køb</button>
+
+    </div>
 </div>
 
 </body>

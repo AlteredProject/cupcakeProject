@@ -57,19 +57,23 @@
 <div class="main-body">
     <h1 class="welcome-heading">Kurv</h1>
     <p class="welcome-sub"></p>
+    <h3 th:if="${#lists.isEmpty(basket)}">Kurven er tom</h3>
 
     <div class="section-block-grid">
-        <div th:each="basket : ${basket}">
-            <span th:text="${basket.bottom.name} + ' med ' + ${basket.topping.name}"></span>
-            <span th:text="${basket.quantity} + ' stk ' + ${basket.totalPrice} + '$'"></span>
-            <hr> <!-- laver en linje så det ligner det adskiller hvert input -->
+        <div th:each="item : ${basket}">
+            <span th:text="${item.bottom.name} + ' bund med ' + ${item.topping.name} + ' topping'"></span>
+            <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+            <hr>
         </div>
 
-        <button type="button" class="btn" onclick="basketBought()">Køb</button>
-
-        <form action="/basket/buy" method="post">
-            <button type="submit" class="btn">Køb2</button>
+        <div th:unless="${#lists.isEmpty(basket)}">
+            <span th:text="${totalPrice} + '$'"></span>
+        </div>
+        <form th:if="${session.currentUser}" action="/basket/buy" method="post">
+            <button th:unless="${#lists.isEmpty(basket)}" type="submit" class="btn">Bestil</button>
         </form>
+        <a href="/login"><button th:unless="${session.currentUser}" class="btn">Log Ind</button></a>
+
     </div>
 </div>
 

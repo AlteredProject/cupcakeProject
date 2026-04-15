@@ -1,6 +1,8 @@
 package app.persistence;
 
+import app.entities.Muffins;
 import app.entities.Order;
+import app.entities.User;
 import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderMapper {
     public static void createOrder(int userId, Date orderDate, double totalPrice, ConnectionPool connectionPool) throws DatabaseException {
@@ -58,6 +61,40 @@ public class OrderMapper {
             return foundOrders;
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
+    public static void createOrderAndLines(User currentUser, List<Muffins> basket, ConnectionPool connectionPool) {
+        String insertOrderSQL = "INSERT INTO orders (user_id, order_date, total_price) VALUES (?, CURRENT_DATE, ?) RETURNING order_id";
+
+        double totalPrice = basket.stream()
+                .mapToDouble(Muffins::totalPrice)
+                .sum();
+
+        try (Connection conn = connectionPool.getConnection()) {
+            int orderId;
+            try (PreparedStatement ps = conn.prepareStatement(insertOrderSQL)) {
+                ps.setInt(1, currentUser.getUserId());
+                ps.setDouble(2, totalPrice);
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                orderId = rs.getInt("order_id");
+            }
+            String insertLine = "INSERT INTO order_lines (order_id, bottom_id, topping_id, quantity, unit_price) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(insertLine)){
+                for (Muffins muffin : basket) {
+                    ps.setInt(1, orderId);
+                    ps.setInt(2, muffin.getBottom().getId());
+                    ps.setInt(3, muffin.getTopping().getId());
+                    ps.setInt(4, muffin.getQuantity());
+                    ps.setDouble(5, muffin.totalPrice());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Fejl ved oprettelse af order/orderLine: " + e.getMessage());
         }
     }
 }

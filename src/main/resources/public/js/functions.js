@@ -8,7 +8,7 @@ function calculatePrice(){
     const amount = document.getElementById("amount").value;
 
     const toppingPrice = toppingSelect.options[toppingSelect.selectedIndex]?.dataset.price;
-    const bottomPrice = toppingSelect.options[bottomSelect.selectedIndex]?.dataset.price;
+    const bottomPrice = bottomSelect.options[bottomSelect.selectedIndex]?.dataset.price;
 
     const total = (parseFloat(toppingPrice) + parseFloat(bottomPrice)) * parseInt(amount);
     if (total.valueOf()) {

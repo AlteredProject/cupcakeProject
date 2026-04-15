@@ -70,7 +70,7 @@
 
                 <p>Bund:</p>
                 <select name="bottom" id="bottom">
-                    <option value="0" disabled selected>Vælg</option>
+                    <option value="" disabled selected>Vælg</option>
                     <option th:each="entry : ${Bottoms}"
                             th:value="${entry.id}"
                             th:attr="data-price=${entry.price}"
@@ -79,7 +79,7 @@
 
                 <p>Mængde</p>
                 <select name="quantity" id="amount">
-                    <option value="0" disabled selected>Vælg</option>
+                    <option value="" disabled selected>Vælg</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

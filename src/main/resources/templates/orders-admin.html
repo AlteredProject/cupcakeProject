@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/public/css/main.css">
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <script th:src="@{/js/functions.js}" defer></script>
+    <script th:src="@{/js/orderLineHandler.js}" defer></script>
 </head>
 <body>
 <header class="header">
@@ -40,13 +41,58 @@
         <button><a href="/adminCustomersView">Se Alle Brugere</a></button>
         <button disabled>Se Alle Ordrer</button>
 
-<!--        <table class="customer-table">-->
-<!--            <tr>-->
-<!--                <th>Email</th>-->
-<!--                <th>Balance</th>-->
-<!--                <th></th>-->
-<!--            </tr>-->
-<!--        </table>-->
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Email</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <th:block th:each="order : ${orders}">
+
+                <!-- Main order row -->
+                <tr>
+                    <td th:text="${order.orderId}">1234</td>
+                    <td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy')}">
+                        12/04/2026
+                    </td>
+                    <td th:text="${order.email}">kunde@email.dk</td>
+                    <td th:text="${order.totalPrice + ' kr'}">149 kr</td>
+                </tr>
+
+                <!-- Details row -->
+                <tr>
+                    <td colspan="4">
+                        <details>
+                            <summary>Vis ordrelinjer</summary>
+
+                            <ul>
+                                <li th:each="line : ${order.orderLines}"
+                                    th:text="${line.bottomName + ' + ' + line.toppingName
+                                          + ' x' + line.quantity
+                                          + ' – ' + line.lineTotal + ' kr'}">
+                                    Chokolade + Vanilje x2 – 100 kr
+                                </li>
+                            </ul>
+
+                            <strong>
+                                Total:
+                                <span th:text="${order.totalPrice + ' kr'}">149 kr</span>
+                            </strong>
+
+                        </details>
+                    </td>
+                </tr>
+
+            </th:block>
+
+            </tbody>
+        </table>
     </div>
     <div th:unless="${session.currentUser.isAdmin}">
         <p>Dette er kun for admin brugere</p>

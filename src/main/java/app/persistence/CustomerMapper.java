@@ -46,7 +46,9 @@ public class CustomerMapper {
                     OrderSummaryDTO order = new OrderSummaryDTO(
                         orderId,
                         rs.getDate("order_date"),
-                        rs.getDouble("total_price")
+                        rs.getDouble("total_price"),
+                        null,
+                        new ArrayList<>()
                     );
 
                     ordersMap.get(userId).add(order);

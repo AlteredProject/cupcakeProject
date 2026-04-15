@@ -71,7 +71,13 @@ public class MainController {
     private static void renderWithBasket(Context ctx, String site) {
         List<Muffins> basket = ctx.sessionAttribute("basket");
         if (basket == null) { basket = new ArrayList<>(); }
+
+        double totalPrice = basket.stream()
+                .mapToDouble(Muffins::totalPrice)
+                .sum();
+
         ctx.attribute("basket", basket);
+        ctx.attribute("totalPrice", totalPrice);
         ctx.render(site);
     }
 
@@ -79,9 +85,13 @@ public class MainController {
         User currentUser = ctx.sessionAttribute("currentUser");
         List<Muffins> basket = ctx.sessionAttribute("basket");
 
-        OrderMapper.createOrderAndLines(currentUser, basket, connectionPool);
+        if (currentUser!=null && basket!=null) {
+            OrderMapper.createOrderAndLines(currentUser, basket, connectionPool);
 
-        ctx.sessionAttribute("basket", null);
-        ctx.redirect("/order/confirmation");
+            ctx.sessionAttribute("basket", null);
+            ctx.redirect("/order/confirmation");
+        } else {
+            ctx.redirect("/");
+        }
     }
 }

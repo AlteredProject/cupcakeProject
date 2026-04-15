@@ -3,8 +3,10 @@ package app.controllers;
 import app.entities.Bottoms;
 import app.entities.Muffins;
 import app.entities.Toppings;
+import app.entities.User;
 import app.persistence.ConnectionPool;
 import app.persistence.CupcakeMapper;
+import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +20,8 @@ public class MainController {
         app.get("/order", ctx -> order(ctx, connectionPool));
         app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
         app.get("/basket", ctx -> basket(ctx, connectionPool));
+        app.post("/basket/buy", ctx -> buyBasket(ctx, connectionPool));
+        app.get("/order/confirmation", ctx -> orderConfirmation(ctx, connectionPool));
     }
 
     public static void homePage(@NotNull Context ctx, ConnectionPool connectionPool){
@@ -41,6 +45,10 @@ public class MainController {
         renderWithBasket(ctx, "basket.html");
     }
 
+    private static void orderConfirmation (@NotNull Context ctx, ConnectionPool connectionPool){
+        renderWithBasket(ctx, "confirmation.html");
+    }
+
     private static void addToBasket (@NotNull Context ctx, ConnectionPool connectionPool) {
 
         List<Muffins> basket = ctx.sessionAttribute("basket");
@@ -60,10 +68,20 @@ public class MainController {
 
     }
 
-    private static void renderWithBasket(Context ctx, String template) {
+    private static void renderWithBasket(Context ctx, String site) {
         List<Muffins> basket = ctx.sessionAttribute("basket");
         if (basket == null) { basket = new ArrayList<>(); }
         ctx.attribute("basket", basket);
-        ctx.render(template);
+        ctx.render(site);
+    }
+
+    private static void buyBasket(@NotNull Context ctx, ConnectionPool connectionPool){
+        User currentUser = ctx.sessionAttribute("currentUser");
+        List<Muffins> basket = ctx.sessionAttribute("basket");
+
+        OrderMapper.createOrderAndLines(currentUser, basket, connectionPool);
+
+        ctx.sessionAttribute("basket", null);
+        ctx.redirect("/order/confirmation");
     }
 }

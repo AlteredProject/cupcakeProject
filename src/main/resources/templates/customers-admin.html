@@ -22,17 +22,35 @@
 
 
 <div class="navbar">
-    <a th:if="${session.currentUser}">Ordrer</a>
+    <a th:if="${session.currentUser}" th:href="@{/order}">Ordrer</a>
     <p th:if="${session.currentUser}">
-        <a th:if="${session.currentUser.isAdmin}" href="/customersView">Kunder</a>
+        <a th:if="${session.currentUser.isAdmin}" href="/adminCustomersView">Kunder</a>
     </p>
     <p th:if="${session.currentUser}">
         <span th:text="${session.currentUser.email}"></span>
     </p>
+    <p th:unless="${session.currentUser}">
+        <a href="/createUser">Opret bruger</a>
+    </p>
+    <p th:unless="${session.currentUser}">
+        <a href="/login">Login</a>
+    </p>
     <p th:if="${session.currentUser}">
         Credit: <span th:text="${session.currentUser.balance}">0</span>
     </p>
-    <img th:src="@{/images/basket.png}">
+
+    <div class="cart-wrapper">
+        <a th:href="@{/basket}"><img th:src="@{/images/basket.png}"></a>
+
+        <div class="cart-dropdown">
+            <p th:if="${#lists.isEmpty(basket)}">Kurven er tom</p>
+
+            <div th:each="item : ${basket}">
+                <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
+                <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="main-body">

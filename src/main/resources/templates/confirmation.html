@@ -25,7 +25,7 @@
 <div class="navbar">
     <a th:if="${session.currentUser}" th:href="@{/order}">Ordrer</a>
     <p th:if="${session.currentUser}">
-        <a th:if="${session.currentUser.isAdmin}">Kunder</a>
+        <a th:if="${session.currentUser.isAdmin}" href="/adminCustomersView">Kunder</a>
     </p>
     <p th:if="${session.currentUser}">
         <span th:text="${session.currentUser.email}"></span>
@@ -41,7 +41,7 @@
     </p>
 
     <div class="cart-wrapper">
-        <img th:src="@{/images/basket.png}">
+        <a th:href="@{/basket}"><img th:src="@{/images/basket.png}"></a>
 
         <div class="cart-dropdown">
             <p th:if="${#lists.isEmpty(basket)}">Kurven er tom</p>

@@ -75,12 +75,12 @@
 
                 <!-- Main order row -->
                 <tr>
-                    <td th:text="${order.orderId}">1234</td>
+                    <td th:text="${order.orderId}">0</td>
                     <td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy')}">
-                        12/04/2026
+                        11/11/1111
                     </td>
                     <td th:text="${order.email}">kunde@email.dk</td>
-                    <td th:text="${order.totalPrice + ' kr'}">149 kr</td>
+                    <td th:text="${order.totalPrice + ' kr'}">0 kr</td>
                 </tr>
 
                 <!-- Details row -->
@@ -94,13 +94,13 @@
                                     th:text="${line.bottomName + ' + ' + line.toppingName
                                           + ' x' + line.quantity
                                           + ' – ' + line.lineTotal + ' kr'}">
-                                    Chokolade + Vanilje x2 – 100 kr
+                                    Topping + Bottom x0 – 0 kr
                                 </li>
                             </ul>
 
                             <strong>
                                 Total:
-                                <span th:text="${order.totalPrice + ' kr'}">149 kr</span>
+                                <span th:text="${order.totalPrice + ' kr'}">0 kr</span>
                             </strong>
 
                         </details>

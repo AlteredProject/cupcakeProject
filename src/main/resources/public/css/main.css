@@ -109,6 +109,10 @@ select {
     transition: 0.3s;
 }
 
+.deleteBtn {
+    color: red;
+}
+
 
 
 @media (min-width: 430px) {

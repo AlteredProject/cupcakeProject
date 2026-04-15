@@ -3,10 +3,7 @@ package app.persistence;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserMapper {
 
@@ -21,7 +18,7 @@ public class UserMapper {
             ps.setString(2, password);
 
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1 ) {
+            if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl ved oprettelse af ny bruger");
             }
 

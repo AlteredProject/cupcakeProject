@@ -1,5 +1,7 @@
 package app.persistence;
 
+import app.dto.OrderLineSummaryDTO;
+import app.dto.OrderSummaryDTO;
 import app.entities.Muffins;
 import app.entities.Order;
 import app.entities.User;
@@ -11,15 +13,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderMapper {
     public static void createOrder(int userId, Date orderDate, double totalPrice, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into orders (user_id, order_date, total_price) values (?,?,?)";
 
         try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
         ) {
             ps.setInt(1, userId);
             ps.setDate(2, orderDate);
@@ -40,25 +44,66 @@ public class OrderMapper {
         }
     }
 
-    public static ArrayList<Order> getOrders(ConnectionPool connectionPool) throws DatabaseException {
+    public static List<OrderSummaryDTO> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<Order> foundOrders = new ArrayList<>();
 
-        String sql = "select * from orders";
+        String sql = """
+        SELECT 
+            orders.order_id, orders.order_date, orders.total_price, 
+            users.email,
+            order_lines.quantity,
+            
+            cupcake_toppings.name AS topping_name,
+            cupcake_toppings.price AS topping_price,
+            
+            cupcake_bottoms.name AS bottom_name,
+            cupcake_bottoms.price AS bottom_price
+            
+        FROM orders
+        JOIN users ON orders.user_id = users.user_id
+        JOIN order_lines ON orders.order_id = order_lines.order_id
+        JOIN cupcake_toppings ON order_lines.topping_id = cupcake_toppings.topping_id
+        JOIN cupcake_bottoms ON order_lines.bottom_id = cupcake_bottoms.bottom_id
+        
+        ORDER BY orders.order_date DESC, orders.order_id;
+        """;
+
+
 
         try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-
             ResultSet rs = ps.executeQuery();
+
+            Map<Integer, OrderSummaryDTO> orderMap = new LinkedHashMap<>();
+
             while (rs.next()) {
                 int orderId = rs.getInt("order_id");
-                int userId = rs.getInt("user_id");
-                Date orderDate = rs.getDate("order_date");
-                double totalPrice = rs.getDouble("total_price");
-                foundOrders.add(new Order(orderId, userId, orderDate, totalPrice));
+
+                orderMap.putIfAbsent(orderId,
+                    new OrderSummaryDTO(
+                        orderId,
+                        rs.getDate("order_date"),
+                        rs.getDouble("total_price"),
+                        rs.getString("email"),
+                        new ArrayList<>()
+                    ));
+
+                OrderLineSummaryDTO line = new OrderLineSummaryDTO(
+                    rs.getString("bottom_name"),
+                    rs.getDouble("bottom_price"),
+                    rs.getString("topping_name"),
+                    rs.getDouble("topping_price"),
+                    rs.getInt("quantity"),
+                    (rs.getDouble("bottom_price")
+                        + rs.getDouble("topping_price"))
+                        * rs.getInt("quantity")
+                );
+
+                orderMap.get(orderId).orderLines().add(line);
             }
-            return foundOrders;
+            return new ArrayList<>(orderMap.values());
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
         }

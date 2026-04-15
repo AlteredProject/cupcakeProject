@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olsker Cupcakes - Customers (admin)</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <script th:src="@{/js/functions.js}" defer></script>
+    <script th:src="@{/js/orderLineHandler.js}" defer></script>
+</head>
+<body>
+<header class="header">
+    <div>
+        <a href="/">
+            <img class="logo" th:src="@{/images/companyLogo2.png}">
+        </a>
+    </div>
+    <div>
+        <img class="cupcakes" th:src="@{/images/cupcakelogo.png}">
+    </div>
+    <div></div>
+</header>
+
+
+<div class="navbar">
+    <a th:if="${session.currentUser}">Ordrer</a>
+    <p th:if="${session.currentUser}">
+        <a th:if="${session.currentUser.isAdmin}" href="/customersView">Kunder</a>
+    </p>
+    <p th:if="${session.currentUser}">
+        <span th:text="${session.currentUser.email}"></span>
+    </p>
+    <p th:if="${session.currentUser}">
+        Credit: <span th:text="${session.currentUser.balance}">0</span>
+    </p>
+    <img th:src="@{/images/basket.png}">
+</div>
+
+<div class="main-body">
+    <div th:if="${session.currentUser.isAdmin}" >
+        <button><a href="/adminCustomersView">Se Alle Brugere</a></button>
+        <button disabled>Se Alle Ordrer</button>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Email</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <th:block th:each="order : ${orders}">
+
+                <!-- Main order row -->
+                <tr>
+                    <td th:text="${order.orderId}">1234</td>
+                    <td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy')}">
+                        12/04/2026
+                    </td>
+                    <td th:text="${order.email}">kunde@email.dk</td>
+                    <td th:text="${order.totalPrice + ' kr'}">149 kr</td>
+                </tr>
+
+                <!-- Details row -->
+                <tr>
+                    <td colspan="4">
+                        <details>
+                            <summary>Vis ordrelinjer</summary>
+
+                            <ul>
+                                <li th:each="line : ${order.orderLines}"
+                                    th:text="${line.bottomName + ' + ' + line.toppingName
+                                          + ' x' + line.quantity
+                                          + ' – ' + line.lineTotal + ' kr'}">
+                                    Chokolade + Vanilje x2 – 100 kr
+                                </li>
+                            </ul>
+
+                            <strong>
+                                Total:
+                                <span th:text="${order.totalPrice + ' kr'}">149 kr</span>
+                            </strong>
+
+                        </details>
+                    </td>
+                </tr>
+
+            </th:block>
+
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${session.currentUser.isAdmin}">
+        <p>Dette er kun for admin brugere</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -2,11 +2,8 @@ package app.controllers;
 
 import app.dto.CustomerInfoDTO;
 import app.dto.OrderSummaryDTO;
-import app.entities.Bottoms;
-import app.entities.Muffins;
-import app.entities.Toppings;
+import app.entities.*;
 import app.exceptions.DatabaseException;
-import app.entities.User;
 import app.persistence.ConnectionPool;
 import app.persistence.CupcakeMapper;
 import app.persistence.CustomerMapper;
@@ -27,6 +24,7 @@ public class MainController {
         app.get("/adminOrdersView", ctx -> adminOrdersPage(ctx, connectionPool));
 
         app.get("/order", ctx -> order(ctx, connectionPool));
+        app.post("/order/delete", ctx -> removeOrder(ctx, connectionPool));
 
         app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
         app.get("/basket", ctx -> basket(ctx, connectionPool));
@@ -53,7 +51,7 @@ public class MainController {
             List<CustomerInfoDTO> customers = CustomerMapper.getCustomerInfo(connectionPool);
 
             ctx.attribute("customers", customers);
-            ctx.render("customers-admin.html");
+            renderWithBasket(ctx,"customers-admin.html");
         } catch (DatabaseException e) {
             ctx.result("Fejl ved indhentning af kunder");
         }
@@ -68,7 +66,13 @@ public class MainController {
         } catch (DatabaseException e) {
             ctx.result("Fejl ved indhentning af ordrer");
         }
-        ctx.render("orders-admin.html");
+        renderWithBasket(ctx, "orders-admin.html");
+    }
+
+    public static void removeOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int orderId = Integer.parseInt(ctx.formParam("orderId"));
+        OrderMapper.removeOrder(orderId, connectionPool);
+        ctx.redirect("/adminOrdersView");
     }
 
     private static void order (@NotNull Context ctx, ConnectionPool connectionPool){

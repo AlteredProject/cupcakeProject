@@ -93,7 +93,7 @@ public class OrderMapper {
                     rs.getString("topping_name"),
                     rs.getDouble("unit_price"),
                     rs.getInt("quantity"),
-                    rs.getDouble("unit_price") * rs.getInt("quantity")
+                    rs.getDouble("unit_price")
                 );
 
                 orderMap.get(orderId).orderLines().add(line);

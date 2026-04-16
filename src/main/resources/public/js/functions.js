@@ -12,6 +12,6 @@ function calculatePrice(){
 
     const total = (parseFloat(toppingPrice) + parseFloat(bottomPrice)) * parseInt(amount);
     if (total.valueOf()) {
-        document.getElementById("totalPrice").innerText = "Samlet pris: " + total + " $";
+        document.getElementById("totalPrice").innerText = "Samlet pris: " + total + " kr.";
     }
 }

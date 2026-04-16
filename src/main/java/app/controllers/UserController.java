@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.Main;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;

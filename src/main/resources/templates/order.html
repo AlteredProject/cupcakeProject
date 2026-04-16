@@ -23,7 +23,6 @@
 
 
 <div class="navbar">
-  <a th:if="${session.currentUser}" th:href="@{/order}">Ordrer</a>
   <p th:if="${session.currentUser}">
     <a th:if="${session.currentUser.isAdmin}" href="/adminCustomersView">Kunder</a>
   </p>

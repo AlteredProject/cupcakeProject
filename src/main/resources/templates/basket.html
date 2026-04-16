@@ -48,7 +48,7 @@
 
             <div th:each="item : ${basket}">
                 <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
-                <span th:text="${item.quantity} + ' stk X' + ${item.totalPrice} + 'kr'"></span>
+                <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + 'kr.'"></span>
             </div>
         </div>
     </div>

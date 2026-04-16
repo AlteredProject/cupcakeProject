@@ -48,7 +48,7 @@
 
             <div th:each="item : ${basket}">
                 <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
-                <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+                <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + 'kr.'"></span>
             </div>
         </div>
     </div>
@@ -66,6 +66,7 @@
                 <th>Date</th>
                 <th>Email</th>
                 <th>Total</th>
+                <th>Slet</th>
             </tr>
             </thead>
 
@@ -81,6 +82,12 @@
                     </td>
                     <td th:text="${order.email}">kunde@email.dk</td>
                     <td th:text="${order.totalPrice + ' kr'}">0 kr</td>
+                    <td>
+                        <form action="/order/delete" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}">
+                            <button type="submit" class="btn">Slet</button>
+                        </form>
+                    </td>
                 </tr>
 
                 <!-- Details row -->

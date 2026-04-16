@@ -48,7 +48,7 @@
 
                 <div th:each="item : ${basket}">
                     <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
-                    <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+                    <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + 'kr.'"></span>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
                     <option th:each="entry : ${Toppings}"
                             th:value="${entry.id}"
                             th:attr="data-price=${entry.price}"
-                            th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+                            th:text="${entry.name + ' - ' + entry.price} + 'kr.'"></option>
                 </select>
 
                 <p>Bund:</p>
@@ -74,7 +74,7 @@
                     <option th:each="entry : ${Bottoms}"
                             th:value="${entry.id}"
                             th:attr="data-price=${entry.price}"
-                            th:text="${entry.name + ' - ' + entry.price} + '$'"></option>
+                            th:text="${entry.name + ' - ' + entry.price} + 'kr.'"></option>
                 </select>
 
                 <p>Mængde</p>
@@ -92,7 +92,7 @@
                     <option value="10">10</option>
                 </select>
 
-                <p id="totalPrice">Samlet pris: 0 $</p>
+                <p id="totalPrice">Samlet pris: 0 kr.</p>
 
                 <button type="submit" class="btn">Læg i Kurv</button>
             </form>

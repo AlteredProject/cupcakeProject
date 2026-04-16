@@ -55,8 +55,8 @@
 
 <div class="main-body">
     <div th:if="${session.currentUser.isAdmin}" >
-        <button><a href="/adminCustomersView">Se Alle Brugere</a></button>
-        <button disabled>Se Alle Ordrer</button>
+        <button class="switchBtn"><a href="/adminCustomersView">Se Alle Brugere</a></button>
+        <button disabled class="switchBtn">Se Alle Ordrer</button>
 
         <table>
             <thead>

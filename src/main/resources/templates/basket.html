@@ -48,7 +48,7 @@
 
             <div th:each="item : ${basket}">
                 <span th:text="${item.bottom.name} + ' med ' + ${item.topping.name}"></span>
-                <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+                <span th:text="${item.quantity} + ' stk X' + ${item.totalPrice} + 'kr'"></span>
             </div>
         </div>
     </div>
@@ -60,14 +60,19 @@
     <h3 th:if="${#lists.isEmpty(basket)}">Kurven er tom</h3>
 
     <div class="section-block-grid">
-        <div th:each="item : ${basket}">
+        <div th:each="item, iter : ${basket}">
             <span th:text="${item.bottom.name} + ' bund med ' + ${item.topping.name} + ' topping'"></span>
-            <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + '$'"></span>
+            <span th:text="${item.quantity} + ' stk ' + ${item.totalPrice} + 'kr.'"></span>
+
+            <form action="/basket/remove" method="post" style="display: inline">
+                <input type="hidden" name="index" th:value="${iter.index}">
+                <button class="btn" type="submit">X</button>
+            </form>
             <hr>
         </div>
 
         <div th:unless="${#lists.isEmpty(basket)}">
-            <span th:text="${totalPrice} + '$'"></span>
+            <span th:text="${totalPrice} + 'kr.'"></span>
         </div>
         <form th:if="${session.currentUser}" action="/basket/buy" method="post">
             <button th:unless="${#lists.isEmpty(basket)}" type="submit" class="btn">Bestil</button>

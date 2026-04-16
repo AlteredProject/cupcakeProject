@@ -30,6 +30,7 @@ public class MainController {
         app.get("/basket", ctx -> basket(ctx, connectionPool));
         app.post("/basket/buy", ctx -> buyBasket(ctx, connectionPool));
         app.get("/order/confirmation", ctx -> orderConfirmation(ctx, connectionPool));
+        app.post("/basket/remove", ctx -> removeFromBasket(ctx, connectionPool));
     }
 
     public static void homePage(@NotNull Context ctx, ConnectionPool connectionPool) {
@@ -96,7 +97,18 @@ public class MainController {
         ctx.sessionAttribute("basket", basket);
 
         ctx.redirect("/");
+    }
 
+    private static void removeFromBasket (@NotNull Context ctx, ConnectionPool connectionPool) {
+        int index = Integer.parseInt(ctx.formParam("index"));
+        List<Muffins> basket = ctx.sessionAttribute("basket");
+
+        if (basket != null && index >= 0 && index < basket.size()){
+            basket.remove(index);
+            ctx.sessionAttribute("basket", basket);
+        }
+
+        ctx.redirect("/basket");
     }
 
     private static void renderWithBasket(Context ctx, String site) {

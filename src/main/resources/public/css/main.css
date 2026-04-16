@@ -113,6 +113,25 @@ select {
     color: red;
 }
 
+.switchBtn {
+    background: var(--inputBg);
+    border: 1px solid var(--inputBoarder);
+    border-radius: 5px;
+    padding: 3px 5px;
+    font-size: 15px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+table th, table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
 
 
 @media (min-width: 430px) {

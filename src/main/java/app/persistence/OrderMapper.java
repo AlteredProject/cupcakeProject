@@ -142,4 +142,15 @@ public class OrderMapper {
             throw new RuntimeException("Fejl ved oprettelse af order/orderLine: " + e.getMessage());
         }
     }
+
+    public static void removeOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String removeOrderSql = "DELETE FROM orders WHERE order_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(removeOrderSql)) {
+            ps.setInt(1, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved sletning af ordre", e.getMessage());
+        }
+    }
 }

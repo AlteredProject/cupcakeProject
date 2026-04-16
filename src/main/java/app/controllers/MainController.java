@@ -25,7 +25,9 @@ public class MainController {
 
         app.get("/adminCustomersView", ctx -> adminCustomersPage(ctx, connectionPool));
         app.get("/adminOrdersView", ctx -> adminOrdersPage(ctx, connectionPool));
+
         app.get("/order", ctx -> order(ctx, connectionPool));
+
         app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
         app.get("/basket", ctx -> basket(ctx, connectionPool));
         app.post("/basket/buy", ctx -> buyBasket(ctx, connectionPool));

@@ -52,12 +52,10 @@ public class OrderMapper {
             orders.order_id, orders.order_date, orders.total_price, 
             users.email,
             order_lines.quantity,
+            order_lines.unit_price,
             
             cupcake_toppings.name AS topping_name,
-            cupcake_toppings.price AS topping_price,
-            
-            cupcake_bottoms.name AS bottom_name,
-            cupcake_bottoms.price AS bottom_price
+            cupcake_bottoms.name AS bottom_name
             
         FROM orders
         JOIN users ON orders.user_id = users.user_id
@@ -92,13 +90,10 @@ public class OrderMapper {
 
                 OrderLineSummaryDTO line = new OrderLineSummaryDTO(
                     rs.getString("bottom_name"),
-                    rs.getDouble("bottom_price"),
                     rs.getString("topping_name"),
-                    rs.getDouble("topping_price"),
+                    rs.getDouble("unit_price"),
                     rs.getInt("quantity"),
-                    (rs.getDouble("bottom_price")
-                        + rs.getDouble("topping_price"))
-                        * rs.getInt("quantity")
+                    rs.getDouble("unit_price") * rs.getInt("quantity")
                 );
 
                 orderMap.get(orderId).orderLines().add(line);

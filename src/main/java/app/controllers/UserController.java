@@ -44,6 +44,13 @@ public class UserController {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
         try {
+            String validationError = Validator.validateUser(email, password);
+            if (validationError != null) {
+                ctx.attribute("msg", validationError);
+                ctx.render("login.html");
+                return;
+            }
+
             User user = UserMapper.login(email, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             MainController.homePage(ctx, connectionPool);

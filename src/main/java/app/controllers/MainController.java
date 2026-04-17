@@ -8,7 +8,6 @@ import app.persistence.ConnectionPool;
 import app.persistence.CupcakeMapper;
 import app.persistence.CustomerMapper;
 import app.persistence.OrderMapper;
-import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,6 @@ public class MainController {
         app.get("/adminCustomersView", ctx -> adminCustomersPage(ctx, connectionPool));
         app.get("/adminOrdersView", ctx -> adminOrdersPage(ctx, connectionPool));
 
-        app.get("/order", ctx -> order(ctx, connectionPool));
         app.post("/order/delete", ctx -> removeOrder(ctx, connectionPool));
 
         app.post("/basket/add", ctx -> addToBasket(ctx, connectionPool));
@@ -73,10 +71,6 @@ public class MainController {
         int orderId = Integer.parseInt(ctx.formParam("orderId"));
         OrderMapper.removeOrder(orderId, connectionPool);
         ctx.redirect("/adminOrdersView");
-    }
-
-    private static void order (@NotNull Context ctx, ConnectionPool connectionPool){
-        renderWithBasket(ctx, "order.html");
     }
 
     private static void basket (@NotNull Context ctx, ConnectionPool connectionPool){

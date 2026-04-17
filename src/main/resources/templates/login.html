@@ -33,9 +33,13 @@
 
 <div class="main-body">
     <h1 class="welcome-heading">Login</h1>
-    <form method="post" action="/login">
+    <form method="post" action="/login" class="loginRegister">
+        <div>
         Email <input type="text" name="email">
-        Password <input type="password" name="password">
+        </div>
+        <div>
+            Password <input type="password" name="password">
+        </div>
         <button type="submit" class="switchBtn">Login</button>
     </form>
     <p th:text="${msg}"></p>

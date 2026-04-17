@@ -131,14 +131,36 @@ table {
 }
 
 table th, table td {
-    padding: 10px 10px;
+    padding: 3px 3px;
     border-bottom: 1px solid #ccc;
     text-align: left;
+}
+
+.loginRegister div {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+
+    align-items: stretch;
+    gap: 5px;
+    padding-bottom: 5px;
+    height: 100%;
 }
 
 
 
 @media (min-width: 430px) {
+
+    .loginRegister div {
+        display: grid;
+        grid-template-columns: 0.1fr 0.2fr;
+        align-items: normal;
+    }
+
+    table th, table td {
+        padding: 10px 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+    }
 
     .header {
         display: grid;

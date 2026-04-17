@@ -33,9 +33,13 @@
 
     <div class="main-body">
         <h1 class="welcome-heading">Opret bruger</h1>
-        <form method="post" action="/createUser">
+        <form method="post" action="/createUser" class="loginRegister">
+            <div>
             Email <input type="text" name="email">
+            </div>
+            <div>
             Password <input type="password" name="password">
+            </div>
             <button type="submit" class="switchBtn">Opret</button>
         </form>
         <p th:text="${msg}"></p>

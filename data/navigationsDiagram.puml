@@ -1,0 +1,46 @@
+@startuml
+!pragma layout smetana
+title Navigationsdiagram - Webshop
+
+[*] --> Forside
+
+state Forside {
+}
+
+Forside --> Login : Til login
+Forside --> OpretBruger : Opret bruger
+Forside --> Forside : Tilføj til kurv
+
+state Login
+Login --> Login : Login fejl
+
+state OpretBruger
+OpretBruger --> Forside : Bruger oprettet
+OpretBruger --> OpretBruger : Fejl
+
+state Basket
+Forside --> Basket : Gå til kurv
+Basket --> Basket : Fjern vare / Tilføj varer
+
+state "Logget ind : Navbar på alle sider" as LoggedIn {
+    state ForsideLoggedIn
+    state BasketLoggedIn
+    state OrderConfirmationLoggedIn
+
+    BasketLoggedIn --> OrderConfirmationLoggedIn : Køb
+    ForsideLoggedIn --> BasketLoggedIn
+    ForsideLoggedIn --> AllUsers
+
+    state "Kan kun ses af Admin" as Admin {
+        state AllUsers
+        state AllOrders
+
+        AllUsers --> AllOrders : Switch between
+        AllOrders --> AllUsers
+    }
+}
+
+Login --> ForsideLoggedIn : Logged in
+
+
+@enduml

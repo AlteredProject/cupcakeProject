@@ -17,6 +17,10 @@ a, a:visited {
     color: inherit;
 }
 
+body {
+    background: var(--mainBg);
+}
+
 
 /* -- Header -- */
 .header {

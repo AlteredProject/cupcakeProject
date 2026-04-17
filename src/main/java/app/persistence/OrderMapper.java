@@ -18,31 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderMapper {
-    public static void createOrder(int userId, Date orderDate, double totalPrice, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into orders (user_id, order_date, total_price) values (?,?,?)";
-
-        try (
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-        ) {
-            ps.setInt(1, userId);
-            ps.setDate(2, orderDate);
-            ps.setDouble(3, totalPrice);
-
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1 ) {
-                throw new DatabaseException("Fejl ved oprettelse af ny ordre");
-            }
-
-        } catch (SQLException e) {
-            String msg = "Der er sket en fejl. Prøv igen";
-            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
-                msg = "en ordre med dette orderId findes allerede.";
-            }
-            throw new DatabaseException(msg, e.getMessage());
-        }
-    }
 
     public static List<OrderSummaryDTO> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<Order> foundOrders = new ArrayList<>();
@@ -63,7 +38,7 @@ public class OrderMapper {
         JOIN cupcake_toppings ON order_lines.topping_id = cupcake_toppings.topping_id
         JOIN cupcake_bottoms ON order_lines.bottom_id = cupcake_bottoms.bottom_id
         
-        ORDER BY orders.order_date DESC, orders.order_id;
+        ORDER BY orders.order_id DESC;
         """;
 
 

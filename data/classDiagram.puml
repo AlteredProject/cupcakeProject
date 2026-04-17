@@ -6,16 +6,17 @@ class Main{
     }
 
     package config {
-        class SessionConfig {
-        }
-        class ThymeleafConfig {
-        }
+        class SessionConfig {}
+        class ThymeleafConfig {}
     }
     package controllers {
-        class MainController {
-        }
-        class UserController {
-        }
+        class MainController {}
+        class UserController {}
+    }
+    package dto {
+        record CustomerInfoDTO {}
+        record OrderLineSummaryDTO {}
+        record OrderSummaryDTO {}
     }
     package entities {
         class Bottoms {
@@ -28,12 +29,26 @@ class Main{
             - String name
             - int price
         }
+        class Muffins {}
+        class Order {}
+        class User {
+            - int userId
+            - String email
+            - String password
+            - double balance
+            - boolean isAdmin
+        }
+
     }
     package persistence {
-        class ConnectionPool {
-        }
-        class CupcakeMapper {
-        }
+        class ConnectionPool {}
+        class CupcakeMapper {}
+        class CustomerMapper {}
+        class OrderMapper {}
+        class UserMapper {}
+    }
+    package services {
+        class Validator {}
     }
 
 
@@ -44,9 +59,27 @@ Main --. SessionConfig
 Main --. ThymeleafConfig
 
 MainController --. CupcakeMapper
+MainController --. OrderMapper
+MainController --. UserMapper
+
+UserController --> User
+UserController --. ConnectionPool
+UserController --. UserMapper
+UserController --. Validator
 
 CupcakeMapper --> Bottoms
 CupcakeMapper --> Toppings
+
+CustomerMapper --> CustomerInfoDTO
+CustomerMapper --> OrderSummaryDTO
+
+OrderMapper --> OrderLineSummaryDTO
+OrderMapper --> OrderSummaryDTO
+OrderMapper --> Muffins
+OrderMapper --> Order
+OrderMapper --> User
+
+UserMapper --> User
 
 
 @enduml

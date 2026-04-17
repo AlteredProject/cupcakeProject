@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -32,21 +33,25 @@ public class UserMapper {
     }
 
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "select * from users where email=? and password_hash=?";
+        String sql = "select * from users where email=?";
 
         try (
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setString(1, email);
-            ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                String hashPassword = rs.getString("password_hash");
+                if (!BCrypt.checkpw(password, hashPassword)) {
+                    throw new DatabaseException("Fejl i login. Prøv igen");
+                }
+
                 int id = rs.getInt("user_id");
                 double balance = rs.getDouble("credit_balance");
                 boolean isAdmin = rs.getBoolean("is_admin");
-                return new User(id, email, password, balance, isAdmin);
+                return new User(id, email, hashPassword, balance, isAdmin);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
